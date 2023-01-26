@@ -20,7 +20,7 @@ module.exports = {
       accounts: [PRIVATE_KEY],
       chainId:5
     },
-    loclahost:{
+    localhost:{
       url:"http://127.0.0.1:8545/",
       // accounts: already given by runnning hardhat node (the 10 fake accounts)
       chainId:31337,

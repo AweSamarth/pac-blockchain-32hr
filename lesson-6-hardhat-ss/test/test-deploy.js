@@ -4,6 +4,9 @@
 //describe is a keyword recognised by mocha. It takes
 // two parameters, string and a function
 
+
+// these are unit tests, we will do staging tests in the next lesson
+
 const {ethers} = require("hardhat")
 const {expect, assert} = require("chai")
 

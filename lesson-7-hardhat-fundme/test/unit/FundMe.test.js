@@ -11,6 +11,7 @@ const {
 } = require("hardhat/internal/hardhat-network/stack-traces/message-trace");
 const { assert, expect } = require("chai");
 
+
 describe("FundMe", function() {
   let fundMe;
   let deployer;
@@ -68,26 +69,91 @@ describe("FundMe", function() {
       await fundMe.fund({ value: sendValue });
     });
     it("withdraw eth from a single funder", async function() {
-        //arrange, act, assert
-        // we are the single funders lol
-        // too real
+      //arrange, act, assert
+      // we are the single funders lol
+      // too real
 
-        //arrange
-        const startingFundMeBalance = await fundMe.provider.getBalance(
-            fundMe.address
-        )
-        const startingDeployerBalance = await fundMe.provider.getBalance(
-            deployer
-        )
+      //arrange
+      const startingFundMeBalance = await fundMe.provider.getBalance(
+        fundMe.address
+      );
+      const startingDeployerBalance = await fundMe.provider.getBalance(
+        deployer
+      );
 
+      //act
+      const transactionResponse = await fundMe.withdraw();
+      const transactionReceipt = await transactionResponse.wait(1);
+
+      const { gasUsed, effectiveGasPrice } = transactionReceipt;
+
+      const gasCost = gasUsed.mul(effectiveGasPrice);
+
+      const endingFundMeBalance = await fundMe.provider.getBalance(
+        fundMe.address
+      );
+      const endingDeployerBalance = await fundMe.provider.getBalance(deployer);
+
+      assert.equal(endingFundMeBalance, 0);
+      assert.equal(
+        startingFundMeBalance.add(startingDeployerBalance).toString(),
+        endingDeployerBalance.add(gasCost).toString()
+      );
+    });
+
+    it("allows us to withdraw with multiple funders", async()=>{
+      const accounts = await ethers.getSigners()
+      for (i=1; i<6; i++){
+        const fundMeConnectedContract = await fundMe.connect(accounts[i])
+        await fundMeConnectedContract.fund({value:sendValue})
+        const startingFundMeBalance = await fundMe.provider.getBalance(fundMe.address)
+        const startingDeployerBalance = await fundMe.provider.getBalance(deployer)
+        
         //act
+
         const transactionResponse = await fundMe.withdraw()
-        const transactionReceipt = await transactionResponse.wait(1)
-        const endingFundmeBalance = await fundMe.provider.getBalance(fundMe.address)
+        const transactionReceipt = await transactionResponse.wait()
+        const {gasUsed, effectiveGasPrice} = transactionReceipt
+        const withdrawGasCost = gasUsed.mul(effectiveGasPrice)
+        const endingFundMeBalance = await fundMe.provider.getBalance(fundMe.address)
+
         const endingDeployerBalance = await fundMe.provider.getBalance(deployer)
 
-        assert.equal(endingFundMeBalance,0)
-        assert.equal(startingFundMeBalance.add(startingDeployerBalance).toString(), endingDeployerBalance.add(gasCost).toString())
-    });
+        assert.equal(startingFundMeBalance.add(startingDeployerBalance).toString(),
+         endingDeployerBalance.add(withdrawGasCost).toString())
+      }
+    })
+    // it("only allows the owner to withdraw", async function(){
+    //   const accounts = await ethers.getSigners()
+    //   const attacker = accounts[1] 
+    //   const attackerConnectedContract = await fundMe.connect(attacker)
+
+    //   await expect(attackerConnectedContract.withdraw()).to.be.revertedWith("FundMe__NotOwner")
+
+    // })
+    it("cheaper withdraw ", async()=>{
+      const accounts = await ethers.getSigners()
+      for (i=1; i<6; i++){
+        const fundMeConnectedContract = await fundMe.connect(accounts[i])
+        await fundMeConnectedContract.fund({value:sendValue})
+        const startingFundMeBalance = await fundMe.provider.getBalance(fundMe.address)
+        const startingDeployerBalance = await fundMe.provider.getBalance(deployer)
+        
+        //act
+
+        const transactionResponse = await fundMe.cheaperWithdraw()
+        const transactionReceipt = await transactionResponse.wait()
+        const {gasUsed, effectiveGasPrice} = transactionReceipt
+        const withdrawGasCost = gasUsed.mul(effectiveGasPrice)
+        const endingFundMeBalance = await fundMe.provider.getBalance(fundMe.address)
+
+        const endingDeployerBalance = await fundMe.provider.getBalance(deployer)
+
+        assert.equal(startingFundMeBalance.add(startingDeployerBalance).toString(),
+         endingDeployerBalance.add(withdrawGasCost).toString())
+      }
+    })
+
+    
   });
 });

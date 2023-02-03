@@ -22,6 +22,14 @@ module.exports = {
     user:{
       default:1
       //we can create multiple users
-    }
+    },
+
+  },
+  gasReporter:{
+    enabled:true,
+    outputFile:"gas-report.txt",
+    noColors :true,
+    currency: "USD",
+    token:"MATIC",
   }
 };

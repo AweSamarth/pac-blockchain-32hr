@@ -3,6 +3,7 @@ const {developmentChains, DECIMALS,INITIAL_ANSWER} = require("../helper-hardhat-
 
 module.exports = async({getNamedAccounts, deployments})=>{
      const {deploy, log} = deployments
+     //deployments from hre
      const {deployer} = await getNamedAccounts()
      // const chainId = network.config.chainId
 

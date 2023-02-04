@@ -10,7 +10,7 @@ contract Practice1{
 
     uint8 favoriteNumber = 123;
     
-    //this automatically chooses uint256, so it is much better to 
+    // uint automatically chooses uint256, so it is much better to 
     //specify the lowest power of 2 (here in this case it is 8 because
     // 123 is smaller than 2^8
 
@@ -23,7 +23,7 @@ contract Practice1{
 
     uint256 public favouriteNumber;
     // by default the visibility is internal (this contract and
-    //its inheritors
+    //its inheritors)
 
     function store(uint256 _favouriteNumber) public{
         favouriteNumber = _favouriteNumber;
@@ -49,6 +49,7 @@ contract Practice1{
         name:"Sam" 
     });
     // notice the semicolon after the struct variable!
+    // duh because it's a single statement after all
 
     People[] public people;
     //(we can put length inside the square brackets)

@@ -17,7 +17,7 @@ module.exports= async function ({getNamedAccounts, deployments}){
         log:true,
         waitConfirmations:network.config.blockConfirmations || 1
      })
-
+     
     //  if(!developmentChains.includes(network.name)&&process.env.ETHERSCAN_API_KEY){
     //     log("Verifying...")
     //     await verify(basicNft.address, args)

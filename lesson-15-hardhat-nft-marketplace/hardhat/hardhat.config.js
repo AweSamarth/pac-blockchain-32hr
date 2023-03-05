@@ -11,6 +11,7 @@ require("dotenv").config()
  */
 
 const GOERLI_RPC_URL =
+
     process.env.GOERLI_RPC_URL || "https://eth-goerli.alchemyapi.io/v2/your-api-key"
 
 const PRIVATE_KEY = process.env.PRIVATE_KEY || "0x"
@@ -25,24 +26,19 @@ module.exports = {
     defaultNetwork: "hardhat",
     networks: {
         hardhat: {
-            // // If you want to do some forking, uncomment this
-            // forking: {
-            //   url: MAINNET_RPC_URL
-            // }
+
             chainId: 31337,
         },
         localhost: {
             chainId: 31337,
         },
-        // goerli: {
-        //     url: GOERLI_RPC_URL,
-        //     accounts: PRIVATE_KEY !== undefined ? [PRIVATE_KEY] : [],
-        //     //   accounts: {
-        //     //     mnemonic: MNEMONIC,
-        //     //   },
-        //     saveDeployments: true,
-        //     chainId: 5,
-        // },
+        goerli: {
+            url: GOERLI_RPC_URL,
+            accounts: PRIVATE_KEY !== undefined ? [PRIVATE_KEY] : [],
+
+            saveDeployments: true,
+            chainId: 5,
+        },
         // mainnet: {
         //     url: MAINNET_RPC_URL,
         //     accounts: PRIVATE_KEY !== undefined ? [PRIVATE_KEY] : [],

@@ -1,0 +1,1 @@
+ https://api.studio.thegraph.com/query/43422/nft-marketplace/0.0.1

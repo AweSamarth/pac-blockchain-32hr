@@ -1,4 +1,4 @@
-import { useQuery, gql } from "@appolo/client";
+import { useQuery, gql } from "@apollo/client";
 
 const GET_ACTIVE_ITEMS = gql`
   {
